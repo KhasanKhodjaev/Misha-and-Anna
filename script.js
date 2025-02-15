@@ -40,9 +40,3 @@ $(window).load(function () {
     init();
 
 });
-
-const returnButton = document.getElementById('returnButton');
-
-returnButton.addEventListener('click', () => {
-  window.location.href = 'https://ваш-главный-сайт.com'; // замените на адрес своего главного сайта
-});
