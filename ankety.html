@@ -440,6 +440,11 @@ h1::after {
                 <input type="text" id="answer20" placeholder="Введите ваш ответ">
             </div>
 
+            <div class="question">21. Ты хотя-бы раз обманывал(а) меня хоть в каком-то случае?</div>
+            <div class="answers">
+                <input type="text" id="answer20" placeholder="Введите ваш ответ">
+            </div>
+
             <button class="submit-btn" onclick="submitAnswers()">Отправить ответы</button>
         </div>
 
@@ -468,6 +473,7 @@ h1::after {
                     <p id="Mikhail_answer18"></p>
                     <p id="Mikhail_answer19"></p>
                     <p id="Mikhail_answer20"></p>
+                    <p id="Mikhail_answer21"></p>
                 </div>
                 <div id="AnutaAnswers">
                     <h3>Ответы Анюты:</h3>
@@ -491,6 +497,7 @@ h1::after {
                     <p id="Anuta_answer18"></p>
                     <p id="Anuta_answer19"></p>
                     <p id="Anuta_answer20"></p>
+                    <p id="Anuta_answer21"></p>
                 </div>
             </div>
         </div>
@@ -511,7 +518,7 @@ h1::after {
 
         function submitAnswers() {
             var user = document.getElementById("userSelect").value;
-            for (var i = 1; i <= 20; i++) {
+            for (var i = 1; i <= 21; i++) {
                 var answer = document.getElementById('answer' + i).value;
                 if (user === "Mikhail") {
                     document.getElementById("Mikhail_answer" + i).innerText = "Ответ " + i + ": " + answer;
