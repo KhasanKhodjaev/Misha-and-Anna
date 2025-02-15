@@ -1861,6 +1861,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------- responsive styles */
+
 @media screen and (max-width: 299px) {
   #universe {
     font-size: 20%;
@@ -1947,13 +1948,20 @@ body {
   }
 }
 
-#returnButton {
-  position: absolute; /* или fixed, в зависимости от желаемого поведения */
-  top: 20px; /* регулируйте положение по вертикали */
-  left: 20px; /* регулируйте положение по горизонтали */
-  padding: 10px 20px;
-  background-color: #4CAF50; /* цвет фона */
-  color: white; /* цвет текста */
-  border: none;
-  cursor: pointer;
-}
+ .return-button {
+        background-color: #4CAF50; /* Зеленый фон */
+        color: white; /* Белый текст */
+        padding: 15px 32px; /* Отступы */
+        text-align: center; /* Центрирование текста */
+        text-decoration: none; /* Убирает подчеркивание */
+        display: inline-block;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px; /* Закругленные углы */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .return-button:hover {
+        background-color: #45a049; /* Цвет при наведении */
+    }
