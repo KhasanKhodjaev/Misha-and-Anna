@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Романтическая анкета</title>
+    <style>
+    body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: linear-gradient(125deg, #0f0f1e, #2a1b3d);
+    color: #e0e0ff;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 30px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.2),
+        inset 0 0 60px rgba(255, 99, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 99, 255, 0.1) 0%, transparent 50%);
+    animation: rotating 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    background: linear-gradient(45deg, #ff69b4, #9d4edd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 40px;
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff69b4, #9d4edd);
+    margin: 15px auto;
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+}
+
+.user-selection {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.user-selection label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #ff69b4;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.user-selection select {
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 105, 180, 0.3);
+    width: 60%;
+    max-width: 400px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff69b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 15px;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 10px rgba(255, 105, 180, 0.1);
+}
+
+.user-selection select:focus {
+    outline: none;
+    border-color: #ff69b4;
+    box-shadow: 
+        0 0 30px rgba(255, 105, 180, 0.3),
+        inset 0 0 10px rgba(255, 105, 180, 0.2);
+}
+
+.question {
+    font-size: 20px;
+    margin-top: 40px;
+    color: #fff;
+    font-weight: 600;
+    padding: 20px;
+    background: rgba(255, 105, 180, 0.05);
+    border-radius: 15px;
+    border-left: 3px solid #ff69b4;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 20px rgba(255, 105, 180, 0.05);
+    transform: perspective(1000px) translateZ(0);
+    transition: transform 0.3s ease;
+}
+
+.question:hover {
+    transform: perspective(1000px) translateZ(10px);
+}
+
+.answers {
+    margin: 15px 0 35px 0;
+}
+
+.answers input {
+    width: 100%;
+    padding: 18px 25px;
+    font-size: 16px;
+    border: 2px solid rgba(255, 105, 180, 0.3);
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 10px rgba(255, 105, 180, 0.1);
+}
+
+.answers input:focus {
+    outline: none;
+    border-color: #ff69b4;
+    box-shadow: 
+        0 0 30px rgba(255, 105, 180, 0.2),
+        inset 0 0 15px rgba(255, 105, 180, 0.2);
+    transform: translateY(-2px);
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background: linear-gradient(45deg, #ff69b4, #9d4edd);
+    color: white;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 
+        0 10px 25px rgba(255, 105, 180, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 60%);
+    transform: rotate(0deg);
+    transition: transform 0.5s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 15px 30px rgba(255, 105, 180, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.submit-btn:hover::before {
+    transform: rotate(180deg);
+}
+
+.result {
+    margin-top: 40px;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 105, 180, 0.3);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.2),
+        inset 0 0 30px rgba(255, 105, 180, 0.1);
+}
+
+.result h2 {
+    background: linear-gradient(45deg, #ff69b4, #9d4edd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+.result h3 {
+    color: #ff69b4;
+    font-size: 24px;
+    margin: 25px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 105, 180, 0.3);
+}
+
+.result p {
+    font-size: 16px;
+    margin: 12px 0;
+    padding: 15px;
+    background: rgba(255, 105, 180, 0.05);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 105, 180, 0.1);
+}
+
+.result p:hover {
+    transform: translateX(5px) scale(1.02);
+    background: rgba(255, 105, 180, 0.1);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.1);
+}
+
+/* Анимации появления элементов */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.questionnaire-section, .result-section {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Эффект свечения для всех элементов при фокусе */
+*:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 32px;
+    }
+    
+    .user-selection select {
+        width: 90%;
+    }
+    
+    .question {
+        font-size: 18px;
+        padding: 15px;
+    }
+    
+    .answers input {
+        padding: 15px 20px;
+    }
+}
+
+/* Добавление эффекта мерцания */
+@keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(255, 105, 180, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.4); }
+    100% { box-shadow: 0 0 5px rgba(255, 105, 180, 0.2); }
+}
+
+.container {
+    animation: glow 3s infinite;
+}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Романтическая анкета</h1>
+        
+        <!-- Выбор пользователя -->
+        <div class="user-selection">
+            <label for="userSelect">Выберите пользователя:</label>
+            <select id="userSelect" onchange="loadQuestions()">
+                <option value="none">-- Выберите --</option>
+                <option value="Mikhail">Михаил</option>
+                <option value="Anuta">Анюта</option>
+            </select>
+        </div>
+
+        <!-- Анкета -->
+        <div id="questionnaire" class="questionnaire-section">
+            <!-- Вопросы анкеты -->
+            <div class="question">1. Как ты представляешь свой идеальный день?</div>
+            <div class="answers">
+                <input type="text" id="answer1" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">2. Что для тебя значит настоящая любовь?</div>
+            <div class="answers">
+                <input type="text" id="answer2" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">3. Какая твоя самая большая мечта, которую ты хочешь осуществить?</div>
+            <div class="answers">
+                <input type="text" id="answer3" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">4. Как ты считаешь, что главное в отношениях: доверие, уважение или страсть?</div>
+            <div class="answers">
+                <input type="text" id="answer4" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">5. Если бы ты мог выбрать место для романтического отпуска, где бы ты хотел побывать?</div>
+            <div class="answers">
+                <input type="text" id="answer5" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">6. Какая музыка или песня вызывает у тебя самые сильные эмоции?</div>
+            <div class="answers">
+                <input type="text" id="answer6" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">7. Какое событие из твоего прошлого ты бы хотел пережить снова?</div>
+            <div class="answers">
+                <input type="text" id="answer7" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">8. Ты веришь в судьбу или считаешь, что мы сами создаём свою жизнь?</div>
+            <div class="answers">
+                <input type="text" id="answer8" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">9. Что ты предпочитаешь: путешествовать по миру или создать уютный дом с близкими?</div>
+            <div class="answers">
+                <input type="text" id="answer9" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">10. Какой фильм или книга оставили в тебе наибольшее впечатление?</div>
+            <div class="answers">
+                <input type="text" id="answer10" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">11. Если бы ты мог изменить что-то в мире, что бы это было?</div>
+            <div class="answers">
+                <input type="text" id="answer11" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">12. Как ты предпочитаешь проводить вечер — в одиночестве, в компании друзей или с близким человеком?</div>
+            <div class="answers">
+                <input type="text" id="answer12" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">13. Какие маленькие моменты в жизни делают тебя по-настоящему счастливым?</div>
+            <div class="answers">
+                <input type="text" id="answer13" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">14. Какая черта характера в людях тебя привлекает больше всего?</div>
+            <div class="answers">
+                <input type="text" id="answer14" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">15. Если бы у тебя была возможность научиться чему-то новому, что бы это было?</div>
+            <div class="answers">
+                <input type="text" id="answer15" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">16. Что для тебя важнее в отношениях: честность или поддержка в трудные моменты?</div>
+            <div class="answers">
+                <input type="text" id="answer16" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">17. Какой поступок или слова могли бы заставить тебя почувствовать себя по-настоящему любимым человеком?</div>
+            <div class="answers">
+                <input type="text" id="answer17" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">18. Что ты считаешь своим самым большим достижением?</div>
+            <div class="answers">
+                <input type="text" id="answer18" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">19. Есть ли у тебя традиции, которые ты любишь соблюдать в жизни?</div>
+            <div class="answers">
+                <input type="text" id="answer19" placeholder="Введите ваш ответ">
+            </div>
+
+            <div class="question">20. Какие маленькие жесты внимания или заботы для тебя самые важные в отношениях?</div>
+            <div class="answers">
+                <input type="text" id="answer20" placeholder="Введите ваш ответ">
+            </div>
+
+            <button class="submit-btn" onclick="submitAnswers()">Отправить ответы</button>
+        </div>
+
+        <div id="resultSection" class="result-section">
+            <div class="result">
+                <h2>Ответы обоих пользователей:</h2>
+                <div id="MikhailAnswers">
+                    <h3>Ответы Михаила:</h3>
+                    <p id="Mikhail_answer1"></p>
+                    <p id="Mikhail_answer2"></p>
+                    <p id="Mikhail_answer3"></p>
+                    <p id="Mikhail_answer4"></p>
+                    <p id="Mikhail_answer5"></p>
+                    <p id="Mikhail_answer6"></p>
+                    <p id="Mikhail_answer7"></p>
+                    <p id="Mikhail_answer8"></p>
+                    <p id="Mikhail_answer9"></p>
+                    <p id="Mikhail_answer10"></p>
+                    <p id="Mikhail_answer11"></p>
+                    <p id="Mikhail_answer12"></p>
+                    <p id="Mikhail_answer13"></p>
+                    <p id="Mikhail_answer14"></p>
+                    <p id="Mikhail_answer15"></p>
+                    <p id="Mikhail_answer16"></p>
+                    <p id="Mikhail_answer17"></p>
+                    <p id="Mikhail_answer18"></p>
+                    <p id="Mikhail_answer19"></p>
+                    <p id="Mikhail_answer20"></p>
+                </div>
+                <div id="AnutaAnswers">
+                    <h3>Ответы Анюты:</h3>
+                    <p id="Anuta_answer1"></p>
+                    <p id="Anuta_answer2"></p>
+                    <p id="Anuta_answer3"></p>
+                    <p id="Anuta_answer4"></p>
+                    <p id="Anuta_answer5"></p>
+                    <p id="Anuta_answer6"></p>
+                    <p id="Anuta_answer7"></p>
+                    <p id="Anuta_answer8"></p>
+                    <p id="Anuta_answer9"></p>
+                    <p id="Anuta_answer10"></p>
+                    <p id="Anuta_answer11"></p>
+                    <p id="Anuta_answer12"></p>
+                    <p id="Anuta_answer13"></p>
+                    <p id="Anuta_answer14"></p>
+                    <p id="Anuta_answer15"></p>
+                    <p id="Anuta_answer16"></p>
+                    <p id="Anuta_answer17"></p>
+                    <p id="Anuta_answer18"></p>
+                    <p id="Anuta_answer19"></p>
+                    <p id="Anuta_answer20"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function loadQuestions() {
+            var user = document.getElementById("userSelect").value;
+            if (user === "none") {
+                document.getElementById("questionnaire").style.display = "none";
+                document.getElementById("resultSection").style.display = "none";
+            } else {
+                document.getElementById("questionnaire").style.display = "block";
+                document.getElementById("resultSection").style.display = "none";
+            }
+        }
+
+        function submitAnswers() {
+            var user = document.getElementById("userSelect").value;
+            for (var i = 1; i <= 20; i++) {
+                var answer = document.getElementById('answer' + i).value;
+                if (user === "Mikhail") {
+                    document.getElementById("Mikhail_answer" + i).innerText = "Ответ " + i + ": " + answer;
+                } else if (user === "Anuta") {
+                    document.getElementById("Anuta_answer" + i).innerText = "Ответ " + i + ": " + answer;
+                }
+            }
+
+            document.getElementById("questionnaire").style.display = "none";
+            document.getElementById("resultSection").style.display = "block";
+        }
+    </script>
+
+<button onclick="window.location.href='index.html';" class="return-button">Вернуться на главный сайт</button>
+
+<style>
+    .return-button {
+        background-color: #4CAF50; /* Зеленый фон */
+        color: white; /* Белый текст */
+        padding: 15px 32px; /* Отступы */
+        text-align: center; /* Центрирование текста */
+        text-decoration: none; /* Убирает подчеркивание */
+        display: inline-block;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px; /* Закругленные углы */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .return-button:hover {
+        background-color: #45a049; /* Цвет при наведении */
+    }
+</style>
+
+
+</body>
+</html>
+
