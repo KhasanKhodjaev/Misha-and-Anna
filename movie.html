@@ -335,6 +335,31 @@ iframe {
         height: 500px;
     }
 }
+
+        .styled-button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6f42c1, #ff8a00); /* Градиентный фон */
+    color: white;
+    border: none;
+    border-radius: 25px; /* Закругленные углы */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Плавный переход для эффектов */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Легкая тень */
+}
+
+.styled-button:hover {
+    background: linear-gradient(135deg, #ff8a00, #6f42c1); /* Изменение фона при наведении */
+    transform: translateY(-2px); /* Подъем кнопки */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Увеличение тени */
+}
+
+.styled-button:active {
+    transform: translateY(2px); /* Легкое опускание кнопки при клике */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Меньшая тень */
+}
+
     </style>
 </head>
 <body>
@@ -352,6 +377,9 @@ iframe {
             <textarea id="messageInput" class="chat-input" placeholder="Введите сообщение..."></textarea>
             <button id="sendBtn" class="send-btn">Отправить</button>
         </div>
+
+        <button onclick="window.location.href='index.html';">Вернуться на главную</button>
+
     </div>
 
     <script type="module">
