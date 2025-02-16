@@ -18,6 +18,16 @@
             --elegant-font: 'Cormorant Garamond', 'Times New Roman', serif;
         }
 
+          .dark-theme {
+            --primary-color: #1a1d1f;
+            --primary-dark: #121314;
+            --gold-accent: #b59452;
+            --gold-light: #c8a95d;
+            --cream-color: #2a2d2f;
+            --text-color: #f5f2eb;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -86,6 +96,26 @@
             color: var(--primary-color);
             letter-spacing: 0.5px;
         }
+        
+        .theme-toggle-btn {
+            background-color: var(--gold-accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle-btn:active {
+            transform: translateY(0);
+        }
 
         .online-status {
             display: flex;
@@ -151,10 +181,10 @@
         }
 
         .sent .message-content {
-            background-color: var(--primary-color);
-            color: var(--cream-color);
-            border-bottom-right-radius: 4px;
-        }
+    background-color: var(--primary-color);
+    color: white; /* Белый цвет для текста */
+    border-bottom-right-radius: 4px;
+}
 
         .received .message-content {
             background-color: white;
@@ -292,7 +322,10 @@
 
         <!-- Чат -->
         <div class="chat-box">
-            <div class="chat-header">Чат</div>
+         <div class="chat-header">
+                <div class="chat-title">Чат</div>
+                <button class="theme-toggle-btn" id="themeToggleBtn">Переключить тему</button>
+            </div>
             <div class="chat-messages" id="messages"></div>
             <div class="chat-input-container">
                 <textarea id="messageInput" class="chat-input" placeholder="Введите сообщение..."></textarea>
@@ -334,6 +367,7 @@
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
         const messagesContainer = document.getElementById('messages');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
         
         // Получаем имя пользователя (например, можно спросить у пользователя)
         const username = prompt("Введите ваше имя:");
@@ -400,6 +434,11 @@
                 event.preventDefault();
                 sendMessage();
             }
+        });
+        
+                // Переключение между светлой и темной темой
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
         });
     </script>
 </body>
