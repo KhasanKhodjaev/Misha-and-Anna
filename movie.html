@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат с Firebase и просмотр фильмов</title>
+    <style>
+       :root {
+    --primary-color: #2c3639;
+    --primary-dark: #1a1d1f;
+    --gold-accent: #c6a868;
+    --gold-light: #d4bc8b;
+    --cream-color: #f5f2eb;
+    --text-color: #2c3639;
+    --border-radius: 12px;
+    --spacing: 24px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --elegant-font: 'Cormorant Garamond', 'Times New Roman', serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--elegant-font);
+    background: linear-gradient(135deg, #2c3639 0%, #1a1d1f 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: var(--spacing);
+    color: var(--text-color);
+    letter-spacing: 0.3px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    display: flex;
+    gap: var(--spacing);
+    height: 92vh;
+    position: relative;
+}
+
+.movie-window {
+    flex: 0 0 50%;
+    background-color: #000;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    position: relative;
+    border: 1px solid rgba(198, 168, 104, 0.2);
+}
+
+.movie-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.movie-window:hover .movie-controls {
+    opacity: 1;
+}
+
+.control-btn {
+    color: var(--gold-accent);
+    background: rgba(198, 168, 104, 0.1);
+    border: 1px solid rgba(198, 168, 104, 0.3);
+    cursor: pointer;
+    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background-color: rgba(198, 168, 104, 0.2);
+    border-color: var(--gold-accent);
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.chat-box {
+    flex: 1;
+    background-color: var(--cream-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow);
+    position: relative;
+    border: 1px solid rgba(198, 168, 104, 0.3);
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(198, 168, 104, 0.3);
+}
+
+.chat-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    letter-spacing: 0.5px;
+}
+
+.online-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gold-accent);
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.online-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--gold-accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: var(--spacing);
+    padding-right: 12px;
+    scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: var(--gold-accent);
+    border-radius: 2px;
+}
+
+.message {
+    margin-bottom: 16px;
+    max-width: 85%;
+    animation: messageAppear 0.4s ease;
+}
+
+.message.sent {
+    margin-left: auto;
+}
+
+.message-content {
+    padding: 14px 18px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.sent .message-content {
+    background-color: var(--primary-color);
+    color: var(--cream-color);
+    border-bottom-right-radius: 4px;
+}
+
+.received .message-content {
+    background-color: white;
+    color: var(--text-color);
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(198, 168, 104, 0.2);
+}
+
+.message-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    margin-top: 6px;
+    color: var(--gold-accent);
+    font-style: italic;
+}
+
+.chat-input-container {
+    position: relative;
+    margin-top: auto;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 4px;
+    border: 1px solid rgba(198, 168, 104, 0.3);
+}
+
+.chat-input {
+    width: 100%;
+    padding: 16px;
+    padding-right: 60px;
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: 1.05rem;
+    resize: none;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    font-family: var(--elegant-font);
+    color: var(--text-color);
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--gold-accent);
+    box-shadow: 0 0 0 3px rgba(198, 168, 104, 0.1);
+}
+
+#sendBtn {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    background-color: var(--gold-accent);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#sendBtn:hover {
+    background-color: var(--gold-light);
+    transform: translateY(-1px);
+}
+
+#sendBtn:active {
+    transform: translateY(0);
+}
+
+.emoji-picker {
+    position: absolute;
+    right: 60px;
+    bottom: 12px;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--gold-accent);
+    transition: color 0.3s ease;
+}
+
+.emoji-picker:hover {
+    color: var(--gold-light);
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 10px 14px;
+    background-color: white;
+    border-radius: 10px;
+    width: fit-content;
+    margin-bottom: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border: 1px solid rgba(198, 168, 104, 0.2);
+}
+
+.typing-indicator.visible {
+    opacity: 1;
+}
+
+.typing-dot {
+    width: 5px;
+    height: 5px;
+    background-color: var(--gold-accent);
+    border-radius: 50%;
+    animation: typingAnimation 1.4s infinite;
+}
+
+@keyframes typingAnimation {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+}
+
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .movie-window {
+        height: 50vh;
+        flex: none;
+        width: 100%;
+    }
+
+    .chat-box {
+        width: 100%;
+        height: 500px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Видео -->
+    <div class="video-container">
+        <!-- Вставка iframe с сайтом Kinogo -->
+        <iframe src="https://kinogo-films.biz/filmy/" title="Просмотр фильмов"></iframe>
+    </div>
+
+    <!-- Чат -->
+    <div class="chat-container">
+        <div class="chat-header">Чат</div>
+        <div class="chat-messages" id="messages"></div>
+        <div class="chat-input-container">
+            <textarea id="messageInput" class="chat-input" placeholder="Введите сообщение..."></textarea>
+            <button id="sendBtn" class="send-btn">Отправить</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Импорт необходимых функций Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+        import { 
+            getDatabase, 
+            ref, 
+            push, 
+            onValue, 
+            set 
+        } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js';
+
+        // Конфигурация Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-qRTFlszcMafJv1eesYg-PUxsxYoo28U",
+            authDomain: "misha-and-anna-48e4c.firebaseapp.com",
+            databaseURL: "https://misha-and-anna-48e4c-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "misha-and-anna-48e4c",
+            storageBucket: "misha-and-anna-48e4c.appspot.com",
+            messagingSenderId: "822036073579",
+            appId: "1:822036073579:web:cd59fd4f5362b5f0bb752e",
+            measurementId: "G-XR86X6PXMX"
+        };
+
+        // Инициализация Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const messagesRef = ref(db, 'messages');
+
+        // Элементы страницы
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const messagesContainer = document.getElementById('messages');
+        
+        // Получаем имя пользователя (например, можно спросить у пользователя)
+        const username = prompt("Введите ваше имя:");
+
+        // Прослушивание изменений в сообщениях
+        onValue(messagesRef, (snapshot) => {
+            messagesContainer.innerHTML = '';
+            const messages = snapshot.val();
+            if (messages) {
+                Object.entries(messages).forEach(([id, message]) => {
+                    const messageElement = document.createElement('div');
+                    messageElement.className = message.sender === username ? 'message sent' : 'message received';
+
+                    const time = new Date(message.timestamp).toLocaleTimeString('ru-RU', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    messageElement.innerHTML = `
+                        <div class="message-content">${message.text}</div>
+                        <div class="message-meta">
+                            <span>${message.sender}</span>
+                            <span>${time}</span>
+                        </div>
+                    `;
+
+                    messagesContainer.appendChild(messageElement);
+                });
+                
+                // Прокрутка к последнему сообщению
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        });
+
+        // Функция отправки сообщения
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                const messageData = {
+                    sender: username,  // Используем имя пользователя
+                    text: message,
+                    timestamp: Date.now()
+                };
+
+                try {
+                    const newMessageRef = push(messagesRef);
+                    await set(newMessageRef, messageData);
+                    messageInput.value = '';
+                } catch (error) {
+                    console.error('Ошибка при отправке сообщения:', error);
+                    alert('Не удалось отправить сообщение. Пожалуйста, попробуйте снова.');
+                }
+            }
+        }
+
+        // Обработчики событий
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
