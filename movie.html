@@ -44,58 +44,19 @@ body {
     position: relative;
 }
 
-.movie-window {
-    flex: 0 0 50%;
-    background-color: #000;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
+.movie-container {
+    width: 50%;  /* Половина экрана */
+    height: 92vh;  /* Высота экрана */
+    overflow: hidden;  /* Обрезать лишнюю часть */
+    border-radius: 12px; /* Закругленные углы */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);  /* Тень */
     position: relative;
-    border: 1px solid rgba(198, 168, 104, 0.2);
-}
-
-.movie-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.movie-window:hover .movie-controls {
-    opacity: 1;
-}
-
-.control-btn {
-    color: var(--gold-accent);
-    background: rgba(198, 168, 104, 0.1);
-    border: 1px solid rgba(198, 168, 104, 0.3);
-    cursor: pointer;
-    font-size: 18px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.control-btn:hover {
-    background-color: rgba(198, 168, 104, 0.2);
-    border-color: var(--gold-accent);
 }
 
 iframe {
     width: 100%;
     height: 100%;
-    border: none;
+    border: none;  /* Убираем рамку */
 }
 
 .chat-box {
@@ -263,80 +224,7 @@ iframe {
     transform: translateY(0);
 }
 
-.emoji-picker {
-    position: absolute;
-    right: 60px;
-    bottom: 12px;
-    padding: 8px;
-    cursor: pointer;
-    color: var(--gold-accent);
-    transition: color 0.3s ease;
-}
-
-.emoji-picker:hover {
-    color: var(--gold-light);
-}
-
-@keyframes messageAppear {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.typing-indicator {
-    display: flex;
-    gap: 4px;
-    padding: 10px 14px;
-    background-color: white;
-    border-radius: 10px;
-    width: fit-content;
-    margin-bottom: 12px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border: 1px solid rgba(198, 168, 104, 0.2);
-}
-
-.typing-indicator.visible {
-    opacity: 1;
-}
-
-.typing-dot {
-    width: 5px;
-    height: 5px;
-    background-color: var(--gold-accent);
-    border-radius: 50%;
-    animation: typingAnimation 1.4s infinite;
-}
-
-@keyframes typingAnimation {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-4px); }
-}
-
-@media (max-width: 1200px) {
-    .container {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .movie-window {
-        height: 50vh;
-        flex: none;
-        width: 100%;
-    }
-
-    .chat-box {
-        width: 100%;
-        height: 500px;
-    }
-}
-
-        .styled-button {
+.styled-button {
     padding: 12px 24px;
     background: linear-gradient(135deg, #6f42c1, #ff8a00); /* Градиентный фон */
     color: white;
@@ -360,26 +248,54 @@ iframe {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Меньшая тень */
 }
 
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .movie-container {
+        height: 50vh;
+        flex: none;
+        width: 100%;
+    }
+
+    .chat-box {
+        width: 100%;
+        height: 500px;
+    }
+}
     </style>
 </head>
 <body>
-    <!-- Видео -->
-    <div class="video-container">
-        <!-- Вставка iframe с сайтом Kinogo -->
-        <iframe src="https://kinogo-films.biz/filmy/" title="Просмотр фильмов"></iframe>
-    </div>
-
-    <!-- Чат -->
-    <div class="chat-container">
-        <div class="chat-header">Чат</div>
-        <div class="chat-messages" id="messages"></div>
-        <div class="chat-input-container">
-            <textarea id="messageInput" class="chat-input" placeholder="Введите сообщение..."></textarea>
-            <button id="sendBtn" class="send-btn">Отправить</button>
+    <div class="container">
+        <!-- Видео -->
+        <div class="movie-container">
+            <!-- Вставка iframe с сайтом Kinogo -->
+            <iframe src="https://kinogo-films.biz/filmy/" title="Просмотр фильмов"></iframe>
         </div>
 
-        <button onclick="window.location.href='index.html';">Вернуться на главную</button>
-
+        <!-- Чат -->
+        <div class="chat-box">
+            <div class="chat-header">Чат</div>
+            <div class="chat-messages" id="messages"></div>
+            <div class="chat-input-container">
+                <textarea id="messageInput" class="chat-input" placeholder="Введите сообщение..."></textarea>
+                <button id="sendBtn" class="send-btn">Отправить</button>
+            </div>
+            <button onclick="window.location.href='index.html';" class="styled-button">Вернуться на главную</button>
+        </div>
     </div>
 
     <script type="module">
@@ -464,16 +380,18 @@ iframe {
                     messageInput.value = '';
                 } catch (error) {
                     console.error('Ошибка при отправке сообщения:', error);
-                    alert('Не удалось отправить сообщение. Пожалуйста, попробуйте снова.');
+                    alert('Не удалось отправить сообщение');
                 }
             }
         }
 
-        // Обработчики событий
+        // Отправка сообщения по кнопке
         sendBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
+
+        // Отправка сообщения по нажатию клавиши Enter
+        messageInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
                 sendMessage();
             }
         });
